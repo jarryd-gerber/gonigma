@@ -20,7 +20,7 @@ func TestRotorI(t *testing.T) {
 	}
 
 	for _, scenario := range scenarios {
-		if got := rotor.GetOutput(scenario.input); got != scenario.expect {
+		if got := rotor.GetOutputValue(scenario.input); got != scenario.expect {
 			t.Errorf("Did not get expected result for input '%v'. Expected %q, got %q",
 				scenario.input, got, scenario.expect)
 		}
