@@ -1,11 +1,14 @@
 package parts
 
+const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
 type Contact struct {
 	input  string
 	output string
 }
 
 type Rotor struct {
+	position      int
 	ringSetting   int
 	notchPosition string
 	Contacts      []Contact
@@ -22,7 +25,6 @@ func createContacts(number string) []Contact {
 	// VII	NZJHGRCXMYSWBOUFAIVLPEKQDT	1939	M3 & M4 Naval (FEB 1942)
 	// VIII	FKQHTLXOCBJSPDZRAMEWNIUYGV	1939	M3 & M4 Naval (FEB 1942)
 	var contacts []Contact
-	var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 	codes := map[string]string{
 		"I":    "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
@@ -47,7 +49,7 @@ func createContacts(number string) []Contact {
 
 }
 
-func CreateRotor(number string, ringSetting int) Rotor {
+func CreateRotor(number string, startPosition int, ringSetting int) Rotor {
 	// Rotor	Notch	Effect
 	// I	Q	If rotor steps from Q to R, the next rotor is advanced
 	// II	E	If rotor steps from E to F, the next rotor is advanced
@@ -64,6 +66,7 @@ func CreateRotor(number string, ringSetting int) Rotor {
 	}
 
 	return Rotor{
+		position:      startPosition,
 		ringSetting:   ringSetting,
 		notchPosition: string(notches[number]),
 		Contacts:      createContacts(number),
@@ -83,4 +86,12 @@ func (r *Rotor) GetOutput(input string) string {
 	}
 
 	return ""
+}
+
+func (r *Rotor) GetInputPosition() {
+
+}
+
+func (r *Rotor) GetOuputPosition() {
+
 }

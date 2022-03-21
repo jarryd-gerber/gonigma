@@ -8,7 +8,7 @@ import (
 
 func TestRotorI(t *testing.T) {
 
-	rotor := parts.CreateRotor("I", 0)
+	rotor := parts.CreateRotor("I", 0, 0)
 
 	scenarios := []struct {
 		input  string
