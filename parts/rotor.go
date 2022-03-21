@@ -1,6 +1,8 @@
 package parts
 
 const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const minPosition = 0
+const maxPosition = 25
 
 type Contact struct {
 	input  string
@@ -74,7 +76,11 @@ func CreateRotor(number string, startPosition int, ringSetting int) Rotor {
 }
 
 func (r *Rotor) Rotate() {
-	r.ringSetting++
+	if r.position == maxPosition {
+		r.position = minPosition
+	} else {
+		r.position++
+	}
 }
 
 func (r *Rotor) GetOutput(input string) string {
@@ -88,10 +94,24 @@ func (r *Rotor) GetOutput(input string) string {
 	return ""
 }
 
-func (r *Rotor) GetInputPosition() {
+func (r *Rotor) GetInputPosition(input string) int {
+	// get the position of a contact input value
+	for position, contact := range r.Contacts {
+		if contact.input == input {
+			return position
+		}
+	}
 
+	return 0
 }
 
-func (r *Rotor) GetOuputPosition() {
+func (r *Rotor) GetOuputPosition(output string) int {
+	// get the position of a contact output value
+	for position, contact := range r.Contacts {
+		if contact.output == output {
+			return position
+		}
+	}
 
+	return 0
 }
