@@ -67,9 +67,14 @@ func (r *Rotor) Rotate() bool {
 	return r.position == strings.Index(alphabet, r.notchPosition)
 }
 
-func (r *Rotor) GetOuputPosition() int {
-	// get the position of a contact output value
-	inputPosition := r.position + r.ringSetting
+func (r *Rotor) GetPosition() int {
+	//Get the current position of a rotor
+	return r.position
+}
+
+func (r *Rotor) GetOuputPosition(inputPosition int) int {
+	// Get the position of a output contact
+	inputPosition += r.ringSetting
 	if inputPosition > maxPosition {
 		inputPosition -= maxPosition
 	}
