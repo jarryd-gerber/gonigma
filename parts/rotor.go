@@ -84,7 +84,7 @@ func (r *Rotor) GetPosition() int {
 }
 
 func (r *Rotor) GetOuputPosition(inputPosition int) int {
-	// Get the position of a output contact
+	// Get the position of an output contact given a specific input contact.
 	inputPosition += r.ringSetting
 	if inputPosition > maxPosition {
 		inputPosition -= maxPosition
@@ -93,4 +93,16 @@ func (r *Rotor) GetOuputPosition(inputPosition int) int {
 	outputPosition := strings.Index(alphabet, string(r.route[inputPosition]))
 
 	return outputPosition
+}
+
+func (r *Rotor) GetInputPosition(outputPosition int) int {
+	// Get the position of an input contact given a specific output contact.
+	outputPosition += r.ringSetting
+	if outputPosition > maxPosition {
+		outputPosition -= maxPosition
+	}
+
+	inputPosition := strings.Index(r.route, string(alphabet[outputPosition]))
+
+	return inputPosition
 }
