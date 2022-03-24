@@ -12,7 +12,7 @@ func main() {
 	rotorIII, _ := parts.CreateRotor("III", 0, 0)
 	reflector, _ := parts.CreateRotor("UKW-A", 0, 0)
 
-	for i := 1; i < 26; i++ {
+	for i := 0; i < 25; i++ {
 		notch := rotorI.Rotate()
 		if notch {
 			notch = rotorII.Rotate()
