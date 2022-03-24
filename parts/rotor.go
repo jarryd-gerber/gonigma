@@ -6,17 +6,11 @@ const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const minPosition = 0
 const maxPosition = 25
 
-type Contact struct {
-	input  string
-	output string
-}
-
 type Rotor struct {
 	position      int
 	ringSetting   int
 	notchPosition string
 	route         string
-	Contacts      []Contact
 }
 
 func CreateRotor(number string, startPosition int, ringSetting int) Rotor {
@@ -38,22 +32,12 @@ func CreateRotor(number string, startPosition int, ringSetting int) Rotor {
 	// V	Z	If rotor steps from Z to A, the next rotor is advanced
 	// VI, VII, VIII	Z+M	If rotor steps from Z to A, or from M to N the next rotor is advanced
 
-	var contacts []Contact
-
 	routes := map[string]string{
 		"I":   "EKMFLGDQVZNTOWYHXUSPAIBRCJ",
 		"II":  "AJDKSIRUXBLHWTMCQGZNPYFVOE",
 		"III": "BDFHJLCPRTXVZNYEIWGAKMUSQO",
 		"IV":  "ESOVPZJAYQUIRHXLNFTGKDCMWB",
 		"V":   "VZBRGITYUPSDNHLXAWMJQOFECK",
-	}
-
-	route := routes[number]
-	for index, char := range alphabet {
-		input := string(char)
-		output := string(route[index+ringSetting])
-		newContact := Contact{input: input, output: output}
-		contacts = append(contacts, newContact)
 	}
 
 	notches := map[string]string{
@@ -67,38 +51,30 @@ func CreateRotor(number string, startPosition int, ringSetting int) Rotor {
 	return Rotor{
 		position:      startPosition,
 		ringSetting:   ringSetting,
-		notchPosition: string(notches[number]),
-		route:         route,
-		Contacts:      contacts,
+		notchPosition: notches[number],
+		route:         routes[number],
 	}
 }
 
-func (r *Rotor) Rotate() {
+func (r *Rotor) Rotate() bool {
+	// rotates the rotor and returns True if notch position has been reached.
 	if r.position == maxPosition {
 		r.position = minPosition
 	} else {
 		r.position++
 	}
+
+	return r.position == strings.Index(alphabet, r.notchPosition)
 }
 
-func (r *Rotor) GetOutputValue(input string) string {
-	// Get the output value for a given input
-	for _, contact := range r.Contacts {
-		if contact.input == input {
-			return contact.output
-		}
-	}
-
-	return ""
-}
-
-func (r *Rotor) GetOuputPosition(input string) int {
+func (r *Rotor) GetOuputPosition() int {
 	// get the position of a contact output value
-	for _, contact := range r.Contacts {
-		if contact.input == input {
-			return strings.Index(r.route, contact.output)
-		}
+	inputPosition := r.position + r.ringSetting
+	if inputPosition > maxPosition {
+		inputPosition -= maxPosition
 	}
 
-	return 0
+	outputPosition := strings.Index(alphabet, string(r.route[inputPosition]))
+
+	return outputPosition
 }

@@ -6,23 +6,27 @@ import (
 	"github.com/jarryd-gerber/gonigma/parts"
 )
 
-func TestRotorI(t *testing.T) {
-
-	rotor := parts.CreateRotor("I", 0, 0)
+func TestRingSettings(t *testing.T) {
 
 	scenarios := []struct {
-		input  string
-		expect string
+		number        string
+		ringSetting   int
+		startPosition int
+		expect        int
 	}{
-		{input: "A", expect: "E"},
-		{input: "B", expect: "K"},
-		{input: "C", expect: "M"},
+		{number: "I", ringSetting: 0, startPosition: 0, expect: 4},
+		{number: "I", ringSetting: 1, startPosition: 0, expect: 10},
+		{number: "I", ringSetting: 2, startPosition: 0, expect: 12},
+		{number: "I", ringSetting: 3, startPosition: 0, expect: 5},
 	}
 
 	for _, scenario := range scenarios {
-		if got := rotor.GetOutputValue(scenario.input); got != scenario.expect {
-			t.Errorf("Did not get expected result for input '%v'. Expected %q, got %q",
-				scenario.input, got, scenario.expect)
+		rotor := parts.CreateRotor(
+			scenario.number, scenario.startPosition, scenario.ringSetting)
+
+		if got := rotor.GetOuputPosition(); got != scenario.expect {
+			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
+				scenario.number, scenario.expect, got)
 		}
 	}
 }
