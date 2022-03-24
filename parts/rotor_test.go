@@ -99,3 +99,16 @@ func TestStartPositions(t *testing.T) {
 		}
 	}
 }
+
+func TestRotate(t *testing.T) {
+	startPosition := 3
+	endPosition := 4
+	rotor, _ := parts.CreateRotor("III", startPosition, 0)
+
+	rotor.Rotate()
+
+	if got := rotor.GetPosition(); got != endPosition {
+		t.Errorf("Did not get expected result. Expected %d, got %d",
+			endPosition, endPosition)
+	}
+}
