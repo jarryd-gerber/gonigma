@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"strings"
 
 	"github.com/jarryd-gerber/gonigma/parts"
 )
@@ -12,7 +13,11 @@ func main() {
 	rotorIII, _ := parts.CreateRotor("III", 0, 0)
 	reflector, _ := parts.CreateRotor("UKW-A", 0, 0)
 
-	for i := 0; i < 25; i++ {
+	inputText := "ENIGMA"
+	alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+
+	for _, char := range inputText {
+
 		notch := rotorI.Rotate()
 		if notch {
 			notch = rotorII.Rotate()
@@ -21,14 +26,27 @@ func main() {
 			}
 		}
 
-		output := rotorI.GetInputPosition(
-			rotorII.GetInputPosition(
-				rotorIII.GetInputPosition(
-					reflector.GetOuputPosition(
-						rotorIII.GetOuputPosition(
-							rotorII.GetOuputPosition(
-								rotorI.GetOuputPosition(i)))))))
+		value := strings.Index(alphabet, string(char))
 
-		fmt.Print(output)
+		outputIII := rotorIII.GetOuputPosition(value)
+
+		inputII := rotorII.GetRelativeInputPosition(outputIII)
+		outputII := rotorII.GetOuputPosition(inputII)
+
+		inputI := rotorI.GetRelativeInputPosition(outputII)
+		outputI := rotorI.GetOuputPosition(inputI)
+
+		outputR := reflector.GetOuputPosition(outputI)
+
+		outputI = rotorI.GetRelativeOutputPosition(outputR)
+		inputI = rotorI.GetInputPosition(outputI)
+
+		outputII = rotorII.GetRelativeOutputPosition(inputI)
+		inputII = rotorII.GetInputPosition(outputII)
+
+		outputIII = rotorI.GetRelativeOutputPosition(inputII)
+		inputIII := rotorI.GetInputPosition(outputIII)
+
+		fmt.Print(string(alphabet[inputIII]))
 	}
 }

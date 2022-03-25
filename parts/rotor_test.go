@@ -93,9 +93,9 @@ func TestStartPositions(t *testing.T) {
 		rotor, _ := parts.CreateRotor(
 			scenario.number, scenario.startPosition, scenario.ringSetting)
 
-		if got := rotor.GetOuputPosition(rotor.GetPosition()); got != scenario.expect {
+		if got := rotor.GetOuputPosition(scenario.startPosition); got != scenario.expect {
 			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
-				scenario.number, scenario.expect, got)
+				scenario.startPosition, scenario.expect, got)
 		}
 	}
 }
