@@ -112,3 +112,44 @@ func TestRotate(t *testing.T) {
 			endPosition, endPosition)
 	}
 }
+
+func TestGetRelativeInputPosition(t *testing.T) {
+
+	scenarios := []struct {
+		outputPosition int
+		expect         int
+	}{
+		{outputPosition: 1, expect: 17},
+		{outputPosition: 10, expect: 0},
+	}
+
+	rotor, _ := parts.CreateRotor("I", 16, 0)
+
+	for _, scenario := range scenarios {
+		if got := rotor.GetRelativeInputPosition(scenario.outputPosition); got != scenario.expect {
+			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
+				scenario.outputPosition, scenario.expect, got)
+		}
+	}
+}
+
+func TestGetOutputPosition(t *testing.T) {
+
+	scenarios := []struct {
+		inputPosition int
+		ringSetting   int
+		expect        int
+	}{
+		{inputPosition: 1, ringSetting: 0, expect: 10},
+		{inputPosition: 1, ringSetting: 1, expect: 12},
+	}
+
+	for _, scenario := range scenarios {
+		rotor, _ := parts.CreateRotor("I", 0, scenario.ringSetting)
+
+		if got := rotor.GetOuputPosition(scenario.inputPosition); got != scenario.expect {
+			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
+				scenario.inputPosition, scenario.expect, got)
+		}
+	}
+}

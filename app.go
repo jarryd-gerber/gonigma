@@ -13,22 +13,23 @@ func main() {
 	rotorIII, _ := parts.CreateRotor("III", 0, 0)
 	reflector, _ := parts.CreateRotor("UKW-A", 0, 0)
 
-	inputText := "ENIGMA"
+	inputText := "AAAAA"
 	alphabet := "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 
 	for _, char := range inputText {
 
-		notch := rotorI.Rotate()
+		notch := rotorIII.Rotate()
 		if notch {
 			notch = rotorII.Rotate()
 			if notch {
-				rotorIII.Rotate()
+				rotorI.Rotate()
 			}
 		}
 
 		value := strings.Index(alphabet, string(char))
 
-		outputIII := rotorIII.GetOuputPosition(value)
+		inputIII := rotorIII.GetRelativeInputPosition(value)
+		outputIII := rotorIII.GetOuputPosition(inputIII)
 
 		inputII := rotorII.GetRelativeInputPosition(outputIII)
 		outputII := rotorII.GetOuputPosition(inputII)
@@ -38,15 +39,15 @@ func main() {
 
 		outputR := reflector.GetOuputPosition(outputI)
 
-		outputI = rotorI.GetRelativeOutputPosition(outputR)
-		inputI = rotorI.GetInputPosition(outputI)
+		inputI = rotorI.GetRelativeInputPosition(outputR)
+		outputI = rotorI.GetOuputPosition(inputI)
 
-		outputII = rotorII.GetRelativeOutputPosition(inputI)
-		inputII = rotorII.GetInputPosition(outputII)
+		inputII = rotorII.GetRelativeInputPosition(outputI)
+		outputII = rotorII.GetOuputPosition(inputII)
 
-		outputIII = rotorI.GetRelativeOutputPosition(inputII)
-		inputIII := rotorI.GetInputPosition(outputIII)
+		inputIII = rotorI.GetRelativeInputPosition(outputII)
+		outputIII = rotorI.GetOuputPosition(inputIII)
 
-		fmt.Print(string(alphabet[inputIII]))
+		fmt.Print(string(alphabet[outputIII]))
 	}
 }

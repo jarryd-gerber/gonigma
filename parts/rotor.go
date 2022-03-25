@@ -84,54 +84,22 @@ func (r *Rotor) GetPosition() int {
 	return r.position
 }
 
+func (r *Rotor) GetRelativeInputPosition(outputPosition int) int {
+	// Input of rotor relative to another rotors output.
+	relativeInput := outputPosition + r.position
+
+	if relativeInput > maxPosition {
+		relativeInput -= maxPosition + 1
+	}
+
+	return relativeInput
+}
+
 func (r *Rotor) GetOuputPosition(inputPosition int) int {
 	// Output of rotor for any given input.
 	inputPosition += r.ringSetting
 
-	if inputPosition > maxPosition {
-		inputPosition -= maxPosition
-	}
-
 	outputPosition := strings.Index(alphabet, string(r.route[inputPosition]))
-
-	return outputPosition
-}
-
-func (r *Rotor) GetRelativeInputPosition(outputPosition int) int {
-	// Input of rotor relative to another rotors output.
-	outputPosition += r.ringSetting + r.position
-
-	if outputPosition > maxPosition {
-		outputPosition -= maxPosition
-	}
-
-	inputPosition := strings.Index(alphabet, string(r.route[outputPosition]))
-
-	return inputPosition
-}
-
-func (r *Rotor) GetInputPosition(outputPosition int) int {
-	// Input of rotor for any given output
-	outputPosition += r.ringSetting
-
-	if outputPosition > maxPosition {
-		outputPosition -= maxPosition + 1
-	}
-
-	inputPosition := strings.Index(r.route, string(alphabet[outputPosition]))
-
-	return inputPosition
-}
-
-func (r *Rotor) GetRelativeOutputPosition(inputPosition int) int {
-	// Output of rotor relative to another rotors input
-	inputPosition += r.ringSetting + r.position
-
-	if inputPosition > maxPosition {
-		inputPosition -= maxPosition + 1
-	}
-
-	outputPosition := strings.Index(r.route, string(alphabet[inputPosition]))
 
 	return outputPosition
 }
