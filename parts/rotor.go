@@ -22,7 +22,7 @@ import (
 	"strings"
 )
 
-const alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+const positions = "ABCDEFGHIJKLMNOPQRSTUVWXYZ"
 const minPosition = 0
 const maxPosition = 25
 
@@ -76,7 +76,7 @@ func (r *Rotor) Rotate() bool {
 		r.position++
 	}
 
-	return r.position == strings.Index(alphabet, r.notchPosition)
+	return r.position == strings.Index(positions, r.notchPosition)
 }
 
 func (r *Rotor) GetPosition() int {
@@ -95,11 +95,18 @@ func (r *Rotor) GetRelativeInputPosition(outputPosition int) int {
 	return relativeInput
 }
 
-func (r *Rotor) GetOuputPosition(inputPosition int) int {
+func (r *Rotor) GetOuput(inputPosition int) (int, string) {
 	// Output of rotor for any given input.
-	inputPosition += r.ringSetting
+	outputValue := string(r.route[inputPosition+r.ringSetting])
+	outputPosition := strings.Index(positions, outputValue)
 
-	outputPosition := strings.Index(alphabet, string(r.route[inputPosition]))
+	return outputPosition, outputValue
+}
 
-	return outputPosition
+func (r *Rotor) GetReverseOutput(inputPosition int) (int, string) {
+	// Output of rotor for any given input.
+	outputValue := string(positions[inputPosition+r.ringSetting])
+	outputPosition := strings.Index(r.route, outputValue)
+
+	return outputPosition, outputValue
 }

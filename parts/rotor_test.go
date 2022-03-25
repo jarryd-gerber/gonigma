@@ -46,7 +46,7 @@ func TestRingSettings(t *testing.T) {
 		rotor, _ := parts.CreateRotor(
 			scenario.number, scenario.startPosition, scenario.ringSetting)
 
-		if got := rotor.GetOuputPosition(rotor.GetPosition()); got != scenario.expect {
+		if got, _ := rotor.GetOuput(rotor.GetPosition()); got != scenario.expect {
 			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
 				scenario.ringSetting, scenario.expect, got)
 		}
@@ -93,7 +93,7 @@ func TestStartPositions(t *testing.T) {
 		rotor, _ := parts.CreateRotor(
 			scenario.number, scenario.startPosition, scenario.ringSetting)
 
-		if got := rotor.GetOuputPosition(scenario.startPosition); got != scenario.expect {
+		if got, _ := rotor.GetOuput(scenario.startPosition); got != scenario.expect {
 			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
 				scenario.startPosition, scenario.expect, got)
 		}
@@ -147,9 +147,33 @@ func TestGetOutputPosition(t *testing.T) {
 	for _, scenario := range scenarios {
 		rotor, _ := parts.CreateRotor("I", 0, scenario.ringSetting)
 
-		if got := rotor.GetOuputPosition(scenario.inputPosition); got != scenario.expect {
+		if got, _ := rotor.GetOuput(scenario.inputPosition); got != scenario.expect {
 			t.Errorf("Did not get expected result for input '%v'. Expected %d, got %d",
 				scenario.inputPosition, scenario.expect, got)
 		}
 	}
+}
+
+func TestInputsCanBeReversed(t *testing.T) {
+	rotor, _ := parts.CreateRotor("I", 0, 0)
+
+	expect := 4
+	reverseExpect := 0
+
+	input := rotor.GetRelativeInputPosition(reverseExpect)
+	got, _ := rotor.GetOuput(input)
+
+	reverseInput := rotor.GetRelativeInputPosition(expect)
+	reverseGot, _ := rotor.GetReverseOutput(reverseInput)
+
+	if got != expect {
+		t.Errorf("Did not get expected result. Expected %d, got %d",
+			expect, got)
+	}
+
+	if reverseGot != reverseExpect {
+		t.Errorf("Did not get expected result. Expected %d, got %d",
+			reverseExpect, reverseGot)
+	}
+
 }
